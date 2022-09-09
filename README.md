@@ -33,6 +33,12 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     console.log(device.cordova);
 }
+
+device.initDevice( (uuid)=>{
+    //success
+}, ()=>{
+    //error
+})
 ```
 
 ## Installation
