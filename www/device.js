@@ -93,4 +93,18 @@ Device.prototype.getInfo = function (successCallback, errorCallback) {
     exec(successCallback, errorCallback, 'Device', 'getDeviceInfo', []);
 };
 
+/**
+ * init device uuid, for privacy examine
+ *
+ * @param {Function} successCallback The function to call when the heading data is available
+ * @param {Function} errorCallback The function to call when there is an error getting the heading data. (OPTIONAL)
+ */
+Device.prototype.initDevice = function (successCallback, errorCallback) {
+    var me = this;
+    exec(function(uuid){
+        me.uuid = uuid;
+        successCallback(uuid);
+    }, errorCallback, 'Device', 'initDevice', []);
+};
+
 module.exports = new Device();

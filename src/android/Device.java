@@ -36,6 +36,7 @@ public class Device extends CordovaPlugin {
     public static String platform;                            // Device OS
     public static String uuid;                                // Device UUID
 
+    private static boolean is_inited = false;
     private static final String ANDROID_PLATFORM = "Android";
     private static final String AMAZON_PLATFORM = "amazon-fireos";
     private static final String AMAZON_DEVICE = "Amazon";
@@ -55,7 +56,7 @@ public class Device extends CordovaPlugin {
      */
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        Device.uuid = getUuid();
+        //Device.uuid = getUuid();
     }
 
     /**
@@ -78,13 +79,20 @@ public class Device extends CordovaPlugin {
             r.put("serial", this.getSerialNumber());
             r.put("sdkVersion", this.getSDKVersion());
             callbackContext.success(r);
-        }
-        else {
+        } else if ( "initDevice".equals(action) ) {
+            this.initDevice();
+	    callbackContext.success(Device.uuid);
+	} else {
             return false;
         }
         return true;
     }
 
+    public void initDevice( ){
+        Device.is_inited = true;
+	Device.uuid = getUuid();
+    }
+    
     //--------------------------------------------------------------------------
     // LOCAL METHODS
     //--------------------------------------------------------------------------
@@ -110,7 +118,10 @@ public class Device extends CordovaPlugin {
      * @return
      */
     public String getUuid() {
-        String uuid = Settings.Secure.getString(this.cordova.getActivity().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        String uuid = "";
+	if (Device.is_inited) {
+            uuid = Settings.Secure.getString(this.cordova.getActivity().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+	}
         return uuid;
     }
 
