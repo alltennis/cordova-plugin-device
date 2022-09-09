@@ -83,6 +83,14 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)initDevice:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    NSString* app_uuid = [self uniqueAppInstanceIdentifier:device];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK app_uuid:app_uuid];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (NSDictionary*)deviceProperties
 {
     UIDevice* device = [UIDevice currentDevice];
